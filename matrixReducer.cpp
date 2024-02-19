@@ -20,8 +20,8 @@ int main()
     cin >> rows;
     cout << "How many columns does the matrix have" << endl;
     cin >> cols;
-    vector<double> row(cols, 0);
-    vector<vector<double> > matrix(rows, row);
+    vector<double> initialRow(cols, 0);
+    vector<vector<double> > matrix(rows, initialRow);
     double input;
     cout << "Enter the Values for the matrix" << endl;
 
@@ -40,11 +40,11 @@ int main()
 
     if (checkRREF(matrix))
     {
-        cout << "This matrix is in RREF" << endl;
+        cout << "This matrix is in Reduced Row-Echelon Form" << endl;
     }
     else
     {
-        cout << "This matrix is not in RREF" << endl;
+        cout << "This matrix is not in Reduced Row-Echelon Form" << endl;
     }
     // Reduction Algorithm
 
@@ -81,11 +81,11 @@ void matrixReducer(vector<vector<double> > matrix) { cout << "this thing works";
 // row operations
 vector<double> multiplyRow(double scalar, vector<double> row)
 {
-    cout << "Mutliply row  by " << scalar << endl;
+    cout << "Multiply row  by " << scalar << endl;
 
-    for (int i = 0; i < row.size(); i++)
+    for (double & i : row)
     {
-        row.at(i) *= scalar;
+        i *= scalar;
     }
 
     return row;
@@ -93,7 +93,7 @@ vector<double> multiplyRow(double scalar, vector<double> row)
 
 vector<double> addRows(vector<double> row1, vector<double> row2)
 {
-    vector<double> sumRow;
+    vector<double> sumRow(row1.size());
     for (int i = 0; i < row1.size(); i++)
     {
         sumRow.push_back(row1.at(i) + row2.at(i));
@@ -107,7 +107,7 @@ bool checkRREF(vector<vector<double> > matrix)
     RULES FOR A MATRICE TO BE IN RREF
         1.The first non-zero entry has to be all 1's
         2. The leading 1 in the second row or beyond is to the right of the leading 1 just above
-        3.Any rows containings only 0's at the bottom
+        3.Any rows containing only 0's at the bottom
     */
 
     // track leading 1's column of current row
@@ -157,8 +157,8 @@ bool checkRREF(vector<vector<double> > matrix)
         }
             //if no leading 1 is found make sure row is all zero's
         else {
-            for (int z = 0; z < currRow.size(); z++) {
-                if (currRow.at(z) != 0) {
+            for (double z : currRow) {
+                if (z != 0) {
                     cout << "The entire row is not zero's" << endl;
                     return false;
                 }
