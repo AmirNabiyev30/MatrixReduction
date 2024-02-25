@@ -4,10 +4,13 @@
 #include "matrix_functions.h"
 #include <vector>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 void printMatrix(int rows, int cols, vector<vector<double> > matrix)
 {
+    //putting decimal points to 2 values
+    cout<<fixed<<setprecision(1);
 
     cout << endl
          << "Matrix:" << endl
