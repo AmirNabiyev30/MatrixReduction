@@ -31,16 +31,60 @@ void printMatrix(int rows, int cols, vector<vector<double> > matrix)
     cout << endl;
 }
 
-void matrixReducer(vector<vector<double> > matrix) { cout << "this thing works"; }
+//recursive function call
+vector<vector<double>> matrixReducer(vector<vector<double> > matrix, vector<double> (*addRows)(vector<double> row1, vector<double> row2) ,
+     vector<double> (*multiplyRow)(double scalar, vector<double> row),
+             bool (*checkRREF)(vector<vector<double> > matrix), int currRow,int currCol,
+             void (*printMatrix)(int rows,int cols,vector<vector<double> > matrix)){
+
+    //defining number of and number of columns for easy use in recursive algo
+    int numRows = matrix.size();
+    int numCols = matrix.at(0).size();
+
+
+    //if the matrix is in reduced row-echelon form the recursion will end
+    if(checkRREF(matrix)){
+        return matrix;
+    }
+    printMatrix(numRows ,numCols,matrix);
+
+    vector<double> currentRow = matrix.at(currRow);
+    double currentValue = currentRow.at(currCol);
+    if(currentValue != 1 && currentValue != 0){
+        //dividing row by the currentValue  value
+        matrix.at(currRow) = multiplyRow(1/currentValue,matrix.at(currRow));
+        currentRow = matrix.at(currRow);
+        //eliminating the values under the current values by making them go to zero
+        for(int i = currRow+1; i < matrix.size();i++){
+            matrix.at(i) = addRows(matrix.at(i),multiplyRow(-1*matrix.at(i).at(currCol),currentRow));
+        }
+
+        //eliminating all values over the current value
+        for(int i = currRow-1 ;i>-1;i--){
+            matrix.at(i) = addRows(matrix.at(i),multiplyRow(-1*matrix.at(i).at(currCol),currentRow));
+        }
+        //printMatrix(numRows,numCols,matrix);
+    }
+        return matrixReducer(matrix,addRows,multiplyRow,checkRREF,currRow+1,currCol+1,printMatrix);
+
+}
 
 // row operations
 vector<double> multiplyRow(double scalar, vector<double> row)
 {
-    cout << "Multiply row  by " << scalar << endl;
+    cout << "Multiply row (";
+    for(int  i = 0;i<row.size();i++){
+        cout<<row.at(i);
+        if(i!=row.size()-1){
+            cout<<",";
+        }
+    }
 
-    for (double & i : row)
+    cout <<") by " << scalar << endl;
+
+    for(double & i : row)
     {
-        i *= scalar;
+        i *=scalar;
     }
 
     return row;
@@ -48,8 +92,25 @@ vector<double> multiplyRow(double scalar, vector<double> row)
 
 vector<double> addRows(vector<double> row1, vector<double> row2)
 {
-    vector<double> sumRow(row1.size());
-    for (int i = 0; i < row1.size(); i++)
+    cout<< "Adding (";
+    for(int  i = 0;i<row2.size();i++){
+        cout<<row2.at(i);
+        if(i!=row2.size()-1){
+            cout<<",";
+        }
+    }
+    cout<<") to (";
+    for(int  i = 0;i<row1.size();i++){
+        cout<<row1.at(i);
+        if(i!=row1.size()-1){
+            cout<<",";
+        }
+    }
+    cout<<") "<<endl;
+
+    vector<double> sumRow;
+    sumRow.reserve(row1.size());
+for (int i = 0; i < row1.size(); i++)
     {
         sumRow.push_back(row1.at(i) + row2.at(i));
     }

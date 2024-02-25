@@ -10,7 +10,10 @@ using namespace std;
 
 void printMatrix(int rows, int cols, vector<vector<double> > matrix);
 
-void matrixReducer(vector<vector<double> > matrix);
+vector<vector<double>> matrixReducer(vector<vector<double> > matrix, vector<double> (*addRows)(vector<double> row1, vector<double> row2) ,
+                                     vector<double> (*multiplyRow)(double scalar, vector<double> row),
+                                     bool (*checkRREF)(vector<vector<double> > matrix), int currRow,int currCol,
+                                     void (*printMatrix)(int rows, int cols,vector<vector<double> > matrix));
 
 vector<double> multiplyRow(double scalar, vector<double> row);
 

@@ -31,15 +31,11 @@ int main()
     // Prints Matrix
     printMatrix(rows, cols, matrix);
 
-    if (checkRREF(matrix))
-    {
-        cout << "This matrix is in Reduced Row-Echelon Form" << endl;
-    }
-    else
-    {
-        cout << "This matrix is not in Reduced Row-Echelon Form" << endl;
-    }
+
     // Reduction Algorithm
+    matrix = matrixReducer(matrix,&addRows,&multiplyRow,&checkRREF,0,0,&printMatrix);
+
+    printMatrix(rows, cols, matrix);
 
     return 0;
 }
