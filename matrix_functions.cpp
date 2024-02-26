@@ -57,6 +57,7 @@ vector<vector<double>> matrixReducer(vector<vector<double> > matrix, vector<doub
         //dividing row by the currentValue  value
         matrix.at(currRow) = multiplyRow(1/currentValue,matrix.at(currRow));
         currentRow = matrix.at(currRow);
+
         //eliminating the values under the current values by making them go to zero
         for(int i = currRow+1; i < matrix.size();i++){
             matrix.at(i) = addRows(matrix.at(i),multiplyRow(-1*matrix.at(i).at(currCol),currentRow));
@@ -66,8 +67,25 @@ vector<vector<double>> matrixReducer(vector<vector<double> > matrix, vector<doub
         for(int i = currRow-1 ;i>-1;i--){
             matrix.at(i) = addRows(matrix.at(i),multiplyRow(-1*matrix.at(i).at(currCol),currentRow));
         }
-        //printMatrix(numRows,numCols,matrix);
+
     }
+
+    else if( currentValue == 1){
+        //eliminating all values under and above that value
+
+        //eliminating values below the current value
+        for(int i = currRow+1; i < matrix.size();i++){
+            matrix.at(i) = addRows(matrix.at(i),multiplyRow(-1*matrix.at(i).at(currCol),currentRow));
+        }
+
+        //eliminating all values over the current value
+        for(int i = currRow-1 ;i>-1;i--){
+            matrix.at(i) = addRows(matrix.at(i),multiplyRow(-1*matrix.at(i).at(currCol),currentRow));
+        }
+
+    }
+
+        //recursive call
         return matrixReducer(matrix,addRows,multiplyRow,checkRREF,currRow+1,currCol+1,printMatrix);
 
 }
@@ -120,6 +138,7 @@ for (int i = 0; i < row1.size(); i++)
     return sumRow;
 }
 
+//Checks if the matrix is in RREF
 bool checkRREF(vector<vector<double> > matrix)
 {
     /*
