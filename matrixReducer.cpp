@@ -31,6 +31,28 @@ int main()
     // Prints Matrix
     printMatrix(rows, cols, matrix);
 
+    //moves all zero rows to the bottom of the matrix
+
+    bool allZeroRow;
+    for(int i = 0 ;i<rows;i++){
+        allZeroRow = true;
+        if(matrix.at(i).at(0) == 0){
+            for(int j = 1;j<cols;j++){
+                if(matrix.at(i).at(j) != 0){
+                    allZeroRow = false;
+                }
+            }
+            if(allZeroRow && i < rows-1){
+
+                vector<double> temp = matrix.at(i+1);
+                matrix.at(i+1) = matrix.at(i);
+                matrix.at(i) = temp;
+            }
+        }
+        //if we have an all zero row we switch it with next row
+
+    }
+
 
     // Reduction Algorithm
     matrix = matrixReducer(matrix,&addRows,&multiplyRow,&checkRREF,0,0,&printMatrix);
