@@ -5,5 +5,5 @@ I created every function by scratch using vectors to keep track of the matrix va
 
 The functions consist of matrice row operations and the recursive algorithm I'm using to reduce into RREF.
 
-This was a fun little thing project I've been working on during the weekends and I'm not fully finished perfecting it but it can handle most test cases.
+This was a fun little thing project I've been working on during the weekends and I finished the program as it can handle every test case now.
 
