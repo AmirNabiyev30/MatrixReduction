@@ -40,15 +40,51 @@ vector<vector<double>> matrixReducer(vector<vector<double> > matrix, vector<doub
              bool (*checkRREF)(vector<vector<double> > matrix), int currRow,int currCol,
              void (*printMatrix)(int rows,int cols,vector<vector<double> > matrix)){
 
-    //defining number of and number of columns for easy use in recursive algo
+    //defining number of and number of columns for easy use in recursive algo(saving time)
     int numRows = matrix.size();
     int numCols = matrix.at(0).size();
 
-
     //if the matrix is in reduced row-echelon form the recursion will end
+
+
+    //if rows and cols are not in the bounds
+    if(currRow >=numRows){
+        cout<<"we are out of bounds in the matrix"<<endl;
+        //looping through matrix to find a non-zero leading 1
+        for(int i = 0;i<numRows;i++){
+            for(int j = 0;j<numCols;j++){
+                if(matrix.at(i).at(j) != 0){
+                    //if the first number is 1 then break the loop and continue going down the rows
+                    // if the first number is non-zero and not 1  then make numbers above and below zero and divide the row by zero
+                    if(matrix.at(i).at(j)  != 1 ) {
+                        cout<<"WE FOUND A NONZERO 1 AT POSITION: ("<<i<<", "<<j<<")"<<endl;
+                        matrix.at(i) = multiplyRow(1 / matrix.at(i).at(j), matrix.at(i));
+                        vector<double> currentRow = matrix.at(i);
+                        //eliminating values lower the current value
+                        for (int row = i + 1; row < matrix.size(); row++) {
+                            matrix.at(row) = addRows(matrix.at(row),
+                                                   multiplyRow(-1 * matrix.at(row).at(j), currentRow));
+                        }
+                        //eliminating all values above than the current value
+                        for (int row = i - 1; row > -1; row--) {
+                            matrix.at(row) = addRows(matrix.at(row),
+                                                   multiplyRow(-1 * matrix.at(row).at(j), currentRow));
+                        }
+                        break;
+                    }
+                    else{
+                        break;
+                    }
+                }
+
+            }
+        }
+    }
+
     if(checkRREF(matrix)){
         return matrix;
     }
+
     printMatrix(numRows ,numCols,matrix);
 
     vector<double> currentRow = matrix.at(currRow);
@@ -57,33 +93,35 @@ vector<vector<double>> matrixReducer(vector<vector<double> > matrix, vector<doub
         //dividing row by the currentValue  value
         matrix.at(currRow) = multiplyRow(1/currentValue,matrix.at(currRow));
         currentRow = matrix.at(currRow);
-
         //eliminating the values under the current values by making them go to zero
         for(int i = currRow+1; i < matrix.size();i++){
             matrix.at(i) = addRows(matrix.at(i),multiplyRow(-1*matrix.at(i).at(currCol),currentRow));
         }
-
         //eliminating all values over the current value
         for(int i = currRow-1 ;i>-1;i--){
             matrix.at(i) = addRows(matrix.at(i),multiplyRow(-1*matrix.at(i).at(currCol),currentRow));
         }
-
     }
-
     else if( currentValue == 1){
-        //eliminating all values under and above that value
-
+        //ELIMINATING ALL VALUES ABOVE AND UNDER THAT VALUE
         //eliminating values below the current value
         for(int i = currRow+1; i < matrix.size();i++){
             matrix.at(i) = addRows(matrix.at(i),multiplyRow(-1*matrix.at(i).at(currCol),currentRow));
         }
-
         //eliminating all values over the current value
         for(int i = currRow-1 ;i>-1;i--){
             matrix.at(i) = addRows(matrix.at(i),multiplyRow(-1*matrix.at(i).at(currCol),currentRow));
         }
 
     }
+
+
+
+
+
+
+
+
 
         //recursive call
         return matrixReducer(matrix,addRows,multiplyRow,checkRREF,currRow+1,currCol+1,printMatrix);

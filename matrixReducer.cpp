@@ -31,8 +31,8 @@ int main()
     // Prints Matrix
     printMatrix(rows, cols, matrix);
 
-    //moves all zero rows to the bottom of the matrix
 
+    //moves all zero rows to the bottom of the matrix
     bool allZeroRow;
     for(int i = 0 ;i<rows;i++){
         allZeroRow = true;
@@ -49,8 +49,6 @@ int main()
                 matrix.at(i) = temp;
             }
         }
-        //if we have an all zero row we switch it with next row
-
     }
 
 
